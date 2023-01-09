@@ -25,29 +25,6 @@ func main() {
 		"X":    10,
 	}
 
-	m2 := map[int]string{
-		1:  "I",
-		2:  "II",
-		3:  "III",
-		4:  "IV",
-		5:  "V",
-		6:  "VI",
-		7:  "VII",
-		8:  "VIII",
-		9:  "IX",
-		10: "X",
-		11: "XI",
-		12: "XII",
-		13: "XIII",
-		14: "XIV",
-		15: "XV",
-		16: "XVI",
-		17: "XVII",
-		18: "XVIII",
-		19: "XIX",
-		20: "XX",
-	}
-
 	in := bufio.NewReader(os.Stdin)
 	s, err := in.ReadString('\n')
 	if err != nil {
@@ -75,7 +52,7 @@ func main() {
 		if rim1 == 0 {
 			fmt.Println(x + y)
 		} else {
-			fmt.Println(int_to_rim(x+y, m2))
+			fmt.Println(int_to_rim(x + y))
 		}
 
 	} else if s1[1] == "-" {
@@ -87,21 +64,21 @@ func main() {
 				fmt.Println(err)
 				return
 			}
-			fmt.Println(int_to_rim(x-y, m2))
+			fmt.Println(int_to_rim(x - y))
 		}
 
 	} else if s1[1] == "*" {
 		if rim1 == 0 {
 			fmt.Println(x * y)
 		} else {
-			fmt.Println(int_to_rim(x*y, m2))
+			fmt.Println(int_to_rim(x * y))
 		}
 
 	} else if s1[1] == "/" {
 		if rim1 == 0 {
 			fmt.Println(x / y)
 		} else {
-			fmt.Println(int_to_rim(x/y, m2))
+			fmt.Println(int_to_rim(x / y))
 		}
 	}
 
@@ -118,13 +95,19 @@ func filterNewLines(s string) string {
 	}, s)
 }
 
-func int_to_rim(a int, m2 map[int]string) string {
-	var q string
-	val, ok := m2[a]
-	if ok {
-		q = val
+func int_to_rim(a int) string {
+	m := [][]string{
+		{"", "M", "MM", "MMM"},
+		{"", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"},
+		{"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"},
+		{"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"}}
+	n := []int{1000, 100, 10, 1}
+	result := ""
+	for k, v := range n {
+		result += m[k][a/v]
+		a %= v
 	}
-	return q
+	return result
 }
 
 func check(s1 string, m map[string]int) (int, int) {
